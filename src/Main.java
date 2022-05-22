@@ -4,8 +4,10 @@ public class Main {
 
     public static void main(String[] args){
         Scanner reader = new Scanner(System.in);
+        FileProcessor processor = new FileProcessor();
         MonthlyReportManager monthly = new MonthlyReportManager();
         YearlyReportManager yearly = new YearlyReportManager();
+        ReportValidator validator = new ReportValidator();
 
         while (true) {
             printMenu();
@@ -13,12 +15,13 @@ public class Main {
             //int input = 1; // hardcoded for testing
             switch (input) {
                 case 1:
-                    monthly.readFileContentsOrNull();
+                    processor.readFileContentsOrNull(monthly.TYPE);
                     break;
                 case 2:
-                    yearly.readFileContentsOrNull();
+                    processor.readFileContentsOrNull(yearly.TYPE);
                     break;
                 case 3:
+                    validator.getExpenseAndProfits();
                     break;
                 case 4:
                     monthly.getMonthlyReports();
