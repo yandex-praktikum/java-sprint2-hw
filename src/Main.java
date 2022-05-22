@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args){
         Scanner reader = new Scanner(System.in);
         MonthlyReportManager monthly = new MonthlyReportManager();
+        YearlyReportManager yearly = new YearlyReportManager();
 
         while (true) {
             printMenu();
@@ -15,6 +16,7 @@ public class Main {
                     monthly.readFileContentsOrNull();
                     break;
                 case 2:
+                    yearly.readFileContentsOrNull();
                     break;
                 case 3:
                     break;
@@ -22,6 +24,7 @@ public class Main {
                     monthly.getMonthlyReports();
                     break;
                 case 5:
+                    yearly.getYearlyReport();
                     break;
                 case 0:
                     return;
