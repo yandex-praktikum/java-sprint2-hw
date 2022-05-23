@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 public class Main {
 
@@ -12,7 +11,8 @@ public class Main {
         while (true) {
             printMenu();
             int input = reader.nextInt();
-            //int input = 1; // hardcoded for testing
+            //int input = 3; // hardcoded for testing
+
             switch (input) {
                 case 1:
                     processor.readFileContentsOrNull(monthly.TYPE);
@@ -21,7 +21,7 @@ public class Main {
                     processor.readFileContentsOrNull(yearly.TYPE);
                     break;
                 case 3:
-                    validator.getExpenseAndProfits();
+                    validator.compareReports();
                     break;
                 case 4:
                     monthly.getMonthlyReports();

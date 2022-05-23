@@ -1,10 +1,15 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MonthlyReportManager {
     FileProcessor processor = new FileProcessor();
-    final public String TYPE = "m";
-    public void getMonthlyReports(){
-        for (String month : processor.readFileContentsOrNull(TYPE).keySet()){
+    final public String TYPE = "m"; // to get the correct selection of files
+
+    public void getMonthlyReports() {
+        /*
+        Provides stats for monthly reports.
+         */
+        for (String month : processor.readFileContentsOrNull(TYPE).keySet()) {
             String wordedMonthName = processor.convertMonthToWords(month.substring(month.length() - 2)); // get last 2 digit sof the file name and convert them
             String[] content = processor.getProcessedFileContent(month);
 
@@ -14,12 +19,33 @@ public class MonthlyReportManager {
             int biggestExpenseValue = Integer.parseInt(getMaxExpense(content).get(1));
 
             System.out.println("Вывожу данные за " + wordedMonthName + ".");
-            System.out.println("Наибоее прибыльный товар: " + mostProfitableItem + ". Общий доход: " + biggestProfit;
-            System.out.println("Наибольшая трата: " + biggestExpenseItem +". Общая сумма трат: " + biggestExpenseValue;
+            System.out.println("Наибоее прибыльный товар: " + mostProfitableItem + ". Общий доход: " + biggestProfit);
+            System.out.println("Наибольшая трата: " + biggestExpenseItem + ". Общая сумма трат: " + biggestExpenseValue);
         }
     }
 
-    private int getExpense(String[] content) {
+    public HashMap<String, ArrayList<Integer>> getData() {
+        /*
+        Creates a HashMap with month name as Key and ArrayList of totalExpense and totalProfit.
+        Used to validate monthly reports against yearly reports.
+         */
+        HashMap<String, ArrayList<Integer>> monthlyProfitAndExpense = new HashMap<>();
+        for (String month : processor.readFileContentsOrNull(TYPE).keySet()) {
+            String wordedMonthName = processor.convertMonthToWords(month.substring(month.length() - 2));
+            String[] content = processor.getProcessedFileContent(month);
+            ArrayList<Integer> values = new ArrayList<>();
+            monthlyProfitAndExpense.put(wordedMonthName, values);
+
+            int totalExpense = getExpense(content);
+            int totalProfit = getProfit(content);
+            monthlyProfitAndExpense.get(wordedMonthName).add(totalExpense);
+            monthlyProfitAndExpense.get(wordedMonthName).add(totalProfit);
+        }
+
+        return monthlyProfitAndExpense;
+    }
+
+    public int getExpense(String[] content) {
         int totalExpense = 0;
         ArrayList<Integer> totalMonthlyExpense = new ArrayList<>();
 
@@ -41,12 +67,11 @@ public class MonthlyReportManager {
         }
         return totalExpense;
     }
-
-    private int getProfit(String[] content) {
+    public int getProfit(String[] content) {
         int totalProfit = 0;
         ArrayList<Integer> totalMonthlyProfit = new ArrayList<>();
 
-        for (int i = 1; i < content.length; i++) {                                                    // parsing lines from the file
+        for (int i = 1; i < content.length; i++) {
             String[] splitVals = content[i].split(",");
             String item = splitVals[0];
             boolean isExpense = Boolean.parseBoolean(splitVals[1]);
@@ -65,12 +90,11 @@ public class MonthlyReportManager {
         }
         return totalProfit;
     }
-
-    private ArrayList<String> getMaxExpense(String[] content){
+    public ArrayList<String> getMaxExpense(String[] content){
         int maxExpense = 0;
         String biggestExpense = "";
         ArrayList<String> maxExpenseList = new ArrayList<>();
-        for (int i = 1; i < content.length; i++){                                                    // parsing lines from the file
+        for (int i = 1; i < content.length; i++){
             String[] splitVals = content[i].split(",");
             String item = splitVals[0];
             boolean isExpense = Boolean.parseBoolean(splitVals[1]);
@@ -89,7 +113,7 @@ public class MonthlyReportManager {
 
         return maxExpenseList;
     }
-    private ArrayList<String> getMostProfitableItem(String[] content){
+    public ArrayList<String> getMostProfitableItem(String[] content){
         int maxProfit = 0;
         String mostProfitableItem = "";
         ArrayList<String> MostProfitableList = new ArrayList<>();

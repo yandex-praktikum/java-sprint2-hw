@@ -9,6 +9,9 @@ public class FileProcessor {
     public HashMap<String, String> fileContent = new HashMap<>();
 
     public HashMap<String, String> readFileContentsOrNull(String type) {
+        /*
+        Reads files from a folder (PATH constant)
+         */
         String content = "";
         File directory = new File(PATH);
         File[] fileList = directory.listFiles(); //get all files in PATH
@@ -31,11 +34,13 @@ public class FileProcessor {
         Trims the file name removing unnecessary notations
          */
         String[] tempName = fileName.split("\\.");
-        String processedName = tempName[1];
-        return processedName;
+        return tempName[1];
     }
 
     public String convertMonthToWords(String month){
+        /*
+        Converts numerical values for months into words.
+        */
         String wordMonth = "";
         switch (month) {
             case "01":
@@ -82,8 +87,10 @@ public class FileProcessor {
     }
 
     public String[] getProcessedFileContent(String fileName){
+        /*
+        Reads file content and splits it into lines.
+         */
         String content = fileContent.get(fileName);
-        String[] lines = content.split(System.lineSeparator());
-        return lines;
+        return content.split(System.lineSeparator());
     }
 }
